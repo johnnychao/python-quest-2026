@@ -34,4 +34,4 @@ data/coffee_sales.csv 最終 Boss 使用的咖啡店銷售資料
 practice/books.html   第 12 章爬蟲練習網頁
 ```
 
-教材：最新 Python 基礎必修課（碁峰 AEL025100）。本 repo 僅含自編練習內容，不含課本與簡報。
+教材：最新 Python 基礎必修課。本 repo 僅含自編練習內容，不含課本與簡報。
