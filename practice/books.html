@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>勇者書店 - 本月暢銷榜</title>
+<style>
+  body { font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif; max-width: 760px; margin: 40px auto; color: #222; }
+  .blueText { color: #1d4ed8; }
+  .book { margin: 6px 0; }
+  .price { color: #b91c1c; font-weight: bold; margin-left: 8px; }
+  .cat { background: #eef2ff; border-radius: 4px; padding: 1px 6px; font-size: 0.85em; margin-left: 6px; }
+  table { border-collapse: collapse; }
+  th, td { border: 1px solid #cbd5e1; padding: 4px 12px; }
+  #notice { color: #047857; }
+  footer { margin-top: 40px; color: #64748b; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<h1>勇者書店</h1>
+<h3 class="blueText">本月暢銷榜（爬蟲練習專用頁面）</h3>
+<p id="notice">本頁為 Python 冒險之旅課程的練習網頁，內容為虛構，歡迎自由爬取。</p>
+
+<ul class="books">
+  <li class="book" data-cat="程式設計"><a href="https://www.gotop.com.tw/books/AEL025100">最新 Python 基礎必修課</a><span class="price">$520</span><span class="cat">程式設計</span></li>
+  <li class="book" data-cat="資料分析"><a href="https://pandas.pydata.org/">pandas 資料分析實戰</a><span class="price">$680</span><span class="cat">資料分析</span></li>
+  <li class="book" data-cat="資料分析"><a href="https://numpy.org/">NumPy 科學計算入門</a><span class="price">$450</span><span class="cat">資料分析</span></li>
+  <li class="book" data-cat="機器學習"><a href="https://scikit-learn.org/">機器學習第一課</a><span class="price">$760</span><span class="cat">機器學習</span></li>
+  <li class="book" data-cat="程式設計"><a href="https://docs.python.org/zh-tw/3/">Python 官方教學手冊</a><span class="price">$0</span><span class="cat">程式設計</span></li>
+  <li class="book" data-cat="視覺化"><a href="https://matplotlib.org/">matplotlib 圖表設計</a><span class="price">$590</span><span class="cat">視覺化</span></li>
+  <li class="book" data-cat="機器學習"><a href="https://www.tensorflow.org/">深度學習冒險指南</a><span class="price">$890</span><span class="cat">機器學習</span></li>
+  <li class="book" data-cat="程式設計"><a href="https://colab.research.google.com/">Colab 雲端實驗室</a><span class="price">$380</span><span class="cat">程式設計</span></li>
+</ul>
+
+<h3>分店庫存</h3>
+<table id="stock">
+  <tr><th>分店</th><th>庫存量</th><th>本月銷量</th></tr>
+  <tr><td>信義店</td><td>120</td><td>86</td></tr>
+  <tr><td>板橋店</td><td>95</td><td>61</td></tr>
+  <tr><td>中壢店</td><td>80</td><td>74</td></tr>
+</table>
+
+<p><a href="https://johnnychao.github.io/python-quest-2026/" id="home" target="_blank">回到 Python 冒險之旅入口</a></p>
+<footer>© 2026 Python 冒險之旅 · 本頁資料為教學用途之虛構內容</footer>
+</body>
+</html>

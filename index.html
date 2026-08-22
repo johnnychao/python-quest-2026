@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python 冒險之旅 2026</title>
+<meta name="description" content="數據分析暨機器學習應用班 · Python 基礎必修課（48 小時） 闖關入口：六座島、20 本 Colab 關卡筆記本、通關密語蓋章、XP 與稱號。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#EEF3F1; --bg2:#F8FAF9; --paper:#FFFFFF; --ink:#14313A; --ink2:#4A6269; --line:#CFDAD6;
+  --sea:#237A86; --sea2:#DCEFF0; --stamp:#C8412B; --gold:#B8860B; --gold2:#FFF4D6;
+  --ok:#2F8F5B; --warn:#B7791F; --shadow:0 6px 24px rgba(20,49,58,.08);
+  --f-display:"LXGW WenKai TC","Noto Serif TC","Microsoft JhengHei","PingFang TC",serif;
+  --f-body:"Noto Sans TC","Microsoft JhengHei","PingFang TC",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono","Consolas","Menlo",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F2227; --bg2:#132B31; --paper:#183840; --ink:#E6EFEC; --ink2:#A9C0BC; --line:#2B4D55;
+    --sea:#62BCC8; --sea2:#1B434B; --stamp:#F07A62; --gold:#E8C160; --gold2:#3B3417;
+    --ok:#6CCB93; --warn:#E0A84A; --shadow:0 6px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F2227; --bg2:#132B31; --paper:#183840; --ink:#E6EFEC; --ink2:#A9C0BC; --line:#2B4D55;
+  --sea:#62BCC8; --sea2:#1B434B; --stamp:#F07A62; --gold:#E8C160; --gold2:#3B3417;
+  --ok:#6CCB93; --warn:#E0A84A; --shadow:0 6px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.65;font-size:16px;
+  background-image:radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 0);background-size:28px 28px}
+a{color:var(--sea)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.25;text-wrap:balance;margin:0}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+/* header */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--bg) 88%, transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:18px;height:60px}
+.brand{font-family:var(--f-display);font-size:1.25rem;font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:.02em;white-space:nowrap}
+.brand small{font-family:var(--f-mono);font-size:.7rem;color:var(--sea);margin-left:8px;letter-spacing:.08em}
+.nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+.nav a{text-decoration:none;color:var(--ink2);padding:6px 10px;border-radius:999px;font-size:.9rem}
+.nav a:hover,.nav a:focus-visible{background:var(--sea2);color:var(--ink)}
+/* hero */
+.hero{padding:40px 0 20px;display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:start}
+.hero h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:700;letter-spacing:.01em}
+.hero h1 em{font-style:normal;color:var(--sea)}
+.hero .lead{color:var(--ink2);max-width:34em;margin:14px 0 0;font-size:1.05rem}
+.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper);font-size:.85rem;color:var(--ink2)}
+/* adventurer card */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:20px}
+.adv h2{font-size:1.1rem;color:var(--ink2);font-weight:400;letter-spacing:.12em;text-transform:uppercase;font-family:var(--f-mono)}
+.adv .who{display:flex;gap:10px;align-items:center;margin-top:10px}
+.adv input{flex:1;min-width:0;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg2);color:var(--ink)}
+.adv input:focus-visible,.stamp-form input:focus-visible{outline:2px solid var(--sea);outline-offset:1px}
+.btn{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--bg2);color:var(--ink);padding:9px 14px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:transform .12s ease, background .12s}
+.btn:hover{transform:translateY(-1px)} .btn:active{transform:translateY(0)}
+.btn:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.btn-sea{background:var(--sea);color:#fff;border-color:var(--sea)}
+.btn-colab{background:var(--gold2);border-color:color-mix(in srgb,var(--gold) 45%,var(--line));color:var(--ink)}
+.btn-stamp{background:var(--stamp);color:#fff;border-color:var(--stamp)}
+.adv .rank{display:flex;align-items:baseline;gap:12px;margin-top:16px;flex-wrap:wrap}
+.adv .rank .title{font-family:var(--f-display);font-size:1.6rem;font-weight:700}
+.adv .rank .xp{font-family:var(--f-mono);color:var(--ink2);font-variant-numeric:tabular-nums}
+.bar{height:12px;background:var(--bg2);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--sea),var(--gold));transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.adv .stats{display:flex;gap:18px;margin-top:12px;font-size:.9rem;color:var(--ink2);flex-wrap:wrap}
+.adv .stats b{color:var(--ink);font-variant-numeric:tabular-nums}
+.badges{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.badge{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px dashed var(--line);font-size:1.1rem;filter:grayscale(1);opacity:.45;background:var(--bg2)}
+.badge.on{filter:none;opacity:1;border:2px solid var(--gold);background:var(--gold2);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 25%,transparent)}
+/* today */
+.today{margin:18px 0 0;border-radius:14px;padding:14px 18px;background:var(--sea2);border:1px solid color-mix(in srgb,var(--sea) 35%,var(--line));display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.today .t-label{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.12em;color:var(--sea);text-transform:uppercase}
+.today b{font-family:var(--f-display);font-size:1.15rem}
+.today .t-links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.today .t-links a{font-size:.85rem}
+/* map */
+.map{margin:28px 0 8px}
+.map h2{font-size:1.5rem;margin-bottom:6px}
+.map p.sub{color:var(--ink2);margin:0 0 10px}
+.chart{width:100%;height:auto;display:block;border-radius:18px;border:1px solid var(--line);background:linear-gradient(180deg,var(--sea2),var(--bg2));box-shadow:var(--shadow)}
+.chart text{font-family:var(--f-display);fill:var(--ink)}
+.chart .isl-label{font-size:15px;font-weight:700}
+.chart .isl-sub{font-size:11px;fill:var(--ink2);font-family:var(--f-mono)}
+.chart .route{fill:none;stroke:var(--ink2);stroke-width:2;stroke-dasharray:6 7;opacity:.7}
+.chart .node{cursor:pointer}
+.chart .node:hover .blob{filter:brightness(1.08)}
+.chart .blob{stroke:var(--paper);stroke-width:3}
+.chart .flag{font-size:22px}
+.chart .done-ring{fill:none;stroke:var(--gold);stroke-width:3}
+/* islands */
+.island{margin:34px 0 0;padding:22px;border-radius:20px;background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow);position:relative}
+.island-head{display:flex;gap:18px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.island-day{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.1em;color:var(--island);background:color-mix(in srgb,var(--island) 12%,var(--paper));padding:3px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--island) 40%,transparent)}
+.island h3{font-size:1.6rem;margin:8px 0 4px}
+.island-theme{margin:0;color:var(--ink2)}
+.island-ch{margin:6px 0 0;font-size:.9rem;color:var(--ink2)}
+.island-progress{display:flex;align-items:center;gap:12px}
+.ring{position:relative;width:64px;height:64px;display:grid;place-items:center}
+.ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--line);stroke-width:3.2}
+.ring-fg{fill:none;stroke:var(--island);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:100 100;stroke-dashoffset:100;transition:stroke-dashoffset .8s ease}
+.ring-num{font-family:var(--f-mono);font-size:.8rem;font-variant-numeric:tabular-nums}
+.island-badge{font-size:.85rem;padding:5px 10px;border-radius:999px;border:1px dashed var(--line);color:var(--ink2)}
+.island.complete .island-badge{border:2px solid var(--gold);background:var(--gold2);color:var(--ink);font-weight:700}
+.levels{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:18px}
+.lv{position:relative;display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:14px;border:1px solid var(--line);background:var(--bg2);overflow:hidden;transition:box-shadow .2s}
+.lv:hover{box-shadow:var(--shadow)}
+.lv.kind-boss,.lv.kind-final{background:linear-gradient(160deg,color-mix(in srgb,var(--island) 10%,var(--bg2)),var(--bg2));border-color:color-mix(in srgb,var(--island) 40%,var(--line))}
+.lv-head{display:flex;gap:8px;align-items:center;font-family:var(--f-mono);font-size:.75rem;color:var(--ink2)}
+.lv-id{font-weight:700;color:var(--island);letter-spacing:.06em}
+.lv-kind{padding:1px 8px;border-radius:999px;background:color-mix(in srgb,var(--island) 14%,var(--paper))}
+.lv-xp{margin-left:auto;color:var(--gold);font-weight:700;font-variant-numeric:tabular-nums}
+.lv-name{font-size:1.12rem;display:flex;gap:8px;align-items:center}
+.lv-book{margin:0;font-size:.82rem;color:var(--ink2)}
+.lv-goals summary{cursor:pointer;font-size:.85rem;color:var(--sea)}
+.lv-goals ul{margin:6px 0 0;padding-left:18px;font-size:.88rem;color:var(--ink2)}
+.lv-actions{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.stamp-form{display:flex;gap:6px}
+.stamp-form input{flex:1;min-width:0;font:inherit;font-family:var(--f-mono);font-size:.85rem;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);text-transform:uppercase}
+.stamp-form .btn{padding:8px 12px}
+.stamp{position:absolute;right:14px;bottom:14px;width:84px;height:84px;border-radius:50%;border:3px double var(--stamp);color:var(--stamp);display:none;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:700;transform:rotate(-14deg);background:color-mix(in srgb,var(--stamp) 8%,transparent);mix-blend-mode:multiply;pointer-events:none}
+.stamp-txt{font-size:1.35rem;line-height:1}
+.stamp-date{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.08em;margin-top:3px}
+.lv.cleared .stamp{display:flex;animation:stampIn .45s cubic-bezier(.2,1.4,.4,1)}
+.lv.cleared .stamp-form{display:none}
+.lv.cleared{border-color:color-mix(in srgb,var(--stamp) 40%,var(--line))}
+@keyframes stampIn{0%{transform:rotate(-14deg) scale(2.2);opacity:0}60%{transform:rotate(-14deg) scale(.95);opacity:1}100%{transform:rotate(-14deg) scale(1)}}
+.cheat{margin-top:16px}
+.cheat summary{cursor:pointer;font-weight:600;color:var(--sea)}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto;font-family:var(--f-mono);font-size:.82rem;line-height:1.55;margin:10px 0 0}
+/* stamp book */
+.book{margin:34px 0 0}
+.book h2,.supply h2{font-size:1.5rem;margin-bottom:8px}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-top:12px}
+.slot{aspect-ratio:1;border:2px dashed var(--line);border-radius:14px;display:grid;place-items:center;grid-template-rows:auto 1fr auto;padding:8px;background:var(--paper);position:relative}
+.slot-id{font-family:var(--f-mono);font-size:.7rem;color:var(--ink2)}
+.slot-emoji{font-size:1.5rem;filter:grayscale(1);opacity:.35}
+.slot-mark{font-family:var(--f-display);font-size:.8rem;color:var(--stamp);opacity:0;transform:rotate(-12deg)}
+.slot.on{border:2px solid var(--stamp);background:color-mix(in srgb,var(--stamp) 6%,var(--paper))}
+.slot.on .slot-emoji{filter:none;opacity:1} .slot.on .slot-mark{opacity:1}
+.book .actions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.book .hint{color:var(--ink2);font-size:.9rem}
+/* supply */
+.supply{margin:34px 0 60px}
+.supply-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:12px}
+@media (min-width:861px){.supply>.supply-grid{grid-template-columns:1fr 2fr}}
+.res-cat h4{font-size:1rem;margin-bottom:6px}
+.res-cat ul{margin:0;padding-left:18px;font-size:.92rem}
+.res-cat li{margin:3px 0}
+.faq details{border-top:1px solid var(--line);padding:8px 0}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:6px 0 0;color:var(--ink2);font-size:.92rem}
+table.sched{border-collapse:collapse;width:100%;font-size:.9rem;margin-top:10px}
+table.sched th,table.sched td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;white-space:nowrap}
+.supply-grid .wide{grid-column:1 / -1}
+table.sched th{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;color:var(--ink2)}
+.tablewrap{overflow-x:auto}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--ink2);font-size:.85rem}
+footer .wrap{display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between}
+/* toast & modal */
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;opacity:0;transition:all .25s;z-index:50;max-width:90vw;box-shadow:var(--shadow);font-weight:600}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.bad{background:var(--stamp);color:#fff}
+.modal{position:fixed;inset:0;background:rgba(10,25,30,.55);display:none;place-items:center;z-index:40;padding:20px}
+.modal.open{display:grid}
+.modal .box{background:var(--paper);color:var(--ink);border-radius:18px;max-width:720px;width:100%;max-height:90vh;overflow:auto;padding:26px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.modal .close{float:right}
+.cert{border:10px double var(--gold);padding:32px;text-align:center;background:var(--paper)}
+.cert h2{font-size:2rem;letter-spacing:.2em}
+.cert .name{font-family:var(--f-display);font-size:2.2rem;margin:14px 0 6px;border-bottom:2px solid var(--ink);display:inline-block;padding:0 24px}
+.cert p{margin:6px 0;color:var(--ink2)}
+.cert .seal{width:110px;height:110px;border-radius:50%;border:3px double var(--stamp);color:var(--stamp);display:inline-grid;place-items:center;font-family:var(--f-display);font-weight:700;transform:rotate(-10deg);margin-top:12px;font-size:1.1rem}
+.cert .sign{display:flex;justify-content:space-between;margin-top:26px;font-size:.9rem}
+.quiz .q{border-top:1px solid var(--line);padding:10px 0}
+.quiz .q p{margin:0 0 6px;font-weight:600}
+.quiz label{display:block;padding:4px 0;cursor:pointer}
+.quiz .res{margin-top:12px;font-weight:700;font-family:var(--f-display);font-size:1.2rem}
+canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+.teacher-only{display:none}
+@media (max-width:860px){.hero{grid-template-columns:1fr}.top .wrap{height:auto;padding:10px 20px;flex-wrap:wrap}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+@media print{body{background:#fff}.top,.hero,.map,.island,.book,.supply,footer,.toast{display:none!important}.modal.open{position:static;display:block;background:none;padding:0}.modal .close{display:none}.cert{border-color:#B8860B}}
+</style>
+</head>
+<body>
+
+<canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#top">Python 冒險之旅<small>2026</small></a>
+  <nav class="nav" aria-label="頁面導覽"><a href="#map">航海圖</a><a href="#island-1">六島關卡</a><a href="#book">集章冊</a><a href="#supply">補給站</a></nav>
+</div></header>
+
+<main class="wrap" id="top">
+  <section class="hero">
+    <div>
+      <h1>六座島、20 個章，把 <em>Python</em> 變成你的冒險技能。</h1>
+      <p class="lead">這是「數據分析暨機器學習應用班 · Python 基礎必修課」的闖關入口。每一關都是一本 Google Colab 筆記本：讀說明、做任務、自動檢查，全部通過就會拿到專屬的<b>通關密語</b>，回來這裡蓋章、累積 XP、升級稱號。</p>
+      <div class="meta"><span class="chip">📅 8/29・8/30・8/31・9/3・9/4・9/5</span><span class="chip">⏱ 6 天 48 小時</span><span class="chip">📖 最新 Python 基礎必修課（碁峰 AEL025100）</span><span class="chip">🧑‍🏫 En 老師</span></div>
+      <div class="today" id="today"></div>
+    </div>
+    <aside class="card adv" aria-label="勇者證">
+      <h2>Adventurer · 勇者證</h2>
+      <form class="who" id="nickForm"><input id="nick" placeholder="輸入你的暱稱（之後筆記本也要填一樣的）" maxlength="20" required><button class="btn btn-sea" type="submit">登錄</button></form>
+      <div class="rank"><span class="title" id="rankTitle">新手村民</span><span class="xp" id="xpNum">0 / 2850 XP</span></div>
+      <div class="bar" role="progressbar" aria-label="XP 進度"><i id="xpBar"></i></div>
+      <div class="stats"><span>⭐ <span id="nextTitle"></span></span></div>
+      <div class="stats"><span>集章 <b id="stampCount">0</b> / 20</span><span>島嶼徽章 <b id="islandCount">0</b> / 6</span></div>
+      <div class="badges" aria-label="島嶼徽章"><span class="badge" data-day="1" title="第 1 島 起始之島">🏝️</span><span class="badge" data-day="2" title="第 2 島 文字之島">🌴</span><span class="badge" data-day="3" title="第 3 島 迴圈之島">🌋</span><span class="badge" data-day="4" title="第 4 島 函式之島">🏔️</span><span class="badge" data-day="5" title="第 5 島 檔案之島">🏜️</span><span class="badge" data-day="6" title="第 6 島 資料之島">🏰</span></div>
+    </aside>
+  </section>
+
+  <section class="map" id="map">
+    <h2>🧭 航海圖</h2>
+    <p class="sub">點島嶼可以跳到那一島的關卡。每通關一座島，島上就會亮起金色光環。</p>
+    <svg class="chart" id="chart" role="img" aria-label="六島航海圖"></svg>
+  </section>
+
+  
+    <section class="island" id="island-1" style="--island: #2E8B57">
+      <header class="island-head">
+        <div class="island-title">
+          <span class="island-day">Day 1 · 08/29（六）</span>
+          <h3><span aria-hidden="true">🏝️</span> 第一島 · 起始之島</h3>
+          <p class="island-theme">認識 Python 與 Colab，學會變數、資料型別與運算子</p>
+          <p class="island-ch">📚 第 1 章 Python 語言概觀 ＋ 第 2 章 基本程式設計</p>
+        </div>
+        <div class="island-progress" data-day="1"><span class="ring"><svg viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fg" cx="18" cy="18" r="15.9"/></svg><b class="ring-num">0/5</b></span><span class="island-badge">🏅 島嶼徽章</span></div>
+      </header>
+      <div class="levels">
+      <article class="lv kind-intro" data-id="L00" id="lv-L00">
+        <div class="lv-head"><span class="lv-id">L00</span><span class="lv-kind">新手村</span><span class="lv-xp">50 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">🏕️</span>新手村：Colab 操作與通關方式</h4>
+        <p class="lv-book">📖 第 1 章 1.6–1.7（本課程以 Colab 取代 Spyder）</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>會開啟 Colab、執行程式格、儲存副本到雲端硬碟</li><li>認識程式格、文字格與執行順序</li><li>學會取得通關密語</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L00_colab_basics.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L00" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L00 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-level" data-id="L01" id="lv-L01">
+        <div class="lv-head"><span class="lv-id">L01</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">🐍</span>Python 初體驗</h4>
+        <p class="lv-book">📖 第 1 章 1.3、1.7</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>用 print() 顯示文字與數字</li><li>看懂並修正常見錯誤訊息</li><li>使用註解說明程式</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L01_python_first_steps.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L01" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L01 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-level" data-id="L02" id="lv-L02">
+        <div class="lv-head"><span class="lv-id">L02</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">📦</span>變數與資料型別</h4>
+        <p class="lv-book">📖 第 2 章 2.1–2.3、2.5</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>宣告變數並指定值</li><li>分辨 int / float / str / bool</li><li>用 int()、float()、str() 做型別轉換</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L02_variables_types.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L02" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L02 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-level" data-id="L03" id="lv-L03">
+        <div class="lv-head"><span class="lv-id">L03</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">🧮</span>運算子與 print 格式化</h4>
+        <p class="lv-book">📖 第 2 章 2.4、2.6</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>使用算術、複合指定、關係與邏輯運算子</li><li>掌握運算子優先順序</li><li>用 % 格式字串與 f-string 控制輸出</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L03_operators_format.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L03" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L03 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-boss" data-id="B1" id="lv-B1">
+        <div class="lv-head"><span class="lv-id">B1</span><span class="lv-kind">Boss 戰</span><span class="lv-xp">200 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">⚔️</span>Boss 戰：旅費精算師</h4>
+        <p class="lv-book">📖 第 1–2 章綜合</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>綜合運用變數、運算子與格式化輸出完成小專案</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/B1_boss_travel_budget.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="B1" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="B1 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article></div>
+      <details class="cheat"><summary>📝 第一島小抄</summary>
+<pre><code># 印出 / 註解
+print("Hello", 3 + 4)      # Hello 7
+print("a", "b", sep=",")   # a,b
+# 這是註解
+# 變數與型別
+name = "小明"; age = 20; h = 1.75; ok = True
+type(age)        # &lt;class 'int'&gt;
+int("12") + 1    # 13    float("2.5")  str(99)  round(3.7)
+# 運算子
+17 / 5  # 3.4   17 // 5  # 3   17 % 5  # 2   2 ** 10  # 1024
+x += 1  # x = x + 1
+a == b, a != b, a >= b, x and y, x or y, not x
+# 格式化
+f"{name} 今年 {age} 歲"   f"{3.14159:.2f}"   f"{42:05d}"   f"{1234567:,}"
+"%s 今年 %d 歲" % (name, age)</code></pre></details>
+    </section>
+    <section class="island" id="island-2" style="--island: #1E90FF">
+      <header class="island-head">
+        <div class="island-title">
+          <span class="island-day">Day 2 · 08/30（日）</span>
+          <h3><span aria-hidden="true">🌴</span> 第二島 · 文字之島</h3>
+          <p class="island-theme">字串處理、格式化輸出入與選擇結構</p>
+          <p class="island-ch">📚 第 3 章 字串與格式化輸出入 ＋ 第 4 章 選擇結構</p>
+        </div>
+        <div class="island-progress" data-day="2"><span class="ring"><svg viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fg" cx="18" cy="18" r="15.9"/></svg><b class="ring-num">0/3</b></span><span class="island-badge">🏅 島嶼徽章</span></div>
+      </header>
+      <div class="levels">
+      <article class="lv kind-level" data-id="L04" id="lv-L04">
+        <div class="lv-head"><span class="lv-id">L04</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">🔤</span>字串與格式化輸出入</h4>
+        <p class="lv-book">📖 第 3 章 3.1–3.4</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>字串索引、切片與常用方法</li><li>用 input() 取得使用者輸入並轉型</li><li>用 format() 與 f-string 對齊、補零、千分位</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L04_strings_io.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L04" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L04 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-level" data-id="L05" id="lv-L05">
+        <div class="lv-head"><span class="lv-id">L05</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">🔀</span>選擇結構 if / elif / else</h4>
+        <p class="lv-book">📖 第 4 章 4.1–4.4</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>寫出單向、雙向、多向與巢狀 if</li><li>組合關係與邏輯運算式</li><li>避免常見的條件判斷錯誤</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L05_if_else.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L05" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L05 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-boss" data-id="B2" id="lv-B2">
+        <div class="lv-head"><span class="lv-id">B2</span><span class="lv-kind">Boss 戰</span><span class="lv-xp">200 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">⚔️</span>Boss 戰：健康管理小幫手</h4>
+        <p class="lv-book">📖 第 3–4 章綜合</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>輸入 → 計算 → 判斷 → 格式化輸出的完整流程</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/B2_boss_health_helper.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="B2" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="B2 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article></div>
+      <details class="cheat"><summary>📝 第二島小抄</summary>
+<pre><code>s = "Python 基礎"
+s[0], s[-1], s[:6], s[::-1], len(s)
+s.upper()  s.lower()  s.title()  s.replace("a","b")  s.find("t")  s.count("o")
+s.split(",")   ",".join(lst)   s.strip()   s.isdigit()
+age = int(input("年齡："))            # input() 永遠是字串
+print(f"|{'文字':>8}|{3.14159:7.2f}|{10350:8,}|{7:03d}|{0.256:.1%}|")
+if score >= 90:
+    grade = "優"
+elif score >= 80:
+    grade = "甲"
+else:
+    grade = "丁"
+if 15 <= age < 65 and member:   # 連鎖比較 + and/or/not</code></pre></details>
+    </section>
+    <section class="island" id="island-3" style="--island: #E8590C">
+      <header class="island-head">
+        <div class="island-title">
+          <span class="island-day">Day 3 · 08/31（一）</span>
+          <h3><span aria-hidden="true">🌋</span> 第三島 · 迴圈之島</h3>
+          <p class="island-theme">重複結構與串列：讓程式替你做苦工</p>
+          <p class="island-ch">📚 第 5 章 重複結構 ＋ 第 6 章 串列</p>
+        </div>
+        <div class="island-progress" data-day="3"><span class="ring"><svg viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fg" cx="18" cy="18" r="15.9"/></svg><b class="ring-num">0/3</b></span><span class="island-badge">🏅 島嶼徽章</span></div>
+      </header>
+      <div class="levels">
+      <article class="lv kind-level" data-id="L06" id="lv-L06">
+        <div class="lv-head"><span class="lv-id">L06</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">🔁</span>迴圈 for / while</h4>
+        <p class="lv-book">📖 第 5 章 5.1–5.4</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>用 for 與 range() 重複執行</li><li>用 while 處理不確定次數的重複</li><li>break、continue 與巢狀迴圈</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L06_loops.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L06" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L06 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-level" data-id="L07" id="lv-L07">
+        <div class="lv-head"><span class="lv-id">L07</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">📋</span>串列 list</h4>
+        <p class="lv-book">📖 第 6 章 6.1–6.6</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>建立、讀取、修改串列</li><li>append / insert / remove / sort 等方法</li><li>二維串列與串列生成式</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L07_lists.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L07" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L07 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-boss" data-id="B3" id="lv-B3">
+        <div class="lv-head"><span class="lv-id">B3</span><span class="lv-kind">Boss 戰</span><span class="lv-xp">200 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">⚔️</span>Boss 戰：班級成績分析</h4>
+        <p class="lv-book">📖 第 5–6 章綜合</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>用迴圈與串列完成統計、搜尋與排序</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/B3_boss_class_scores.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="B3" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="B3 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article></div>
+      <details class="cheat"><summary>📝 第三島小抄</summary>
+<pre><code>for i in range(1, 11):        # 1..10
+    total += i
+for i in range(10, 0, -1):    # 倒數
+for ch in "abc":              # 走訪字串
+while cond:                   # 條件為 True 就重複
+    ...
+    if x == 0: break          # 跳出
+    if x < 0: continue        # 下一輪
+lst = [11, 22, 33]
+lst[0], lst[-1], lst[1:3]
+lst.append(44)  lst.insert(0, 9)  lst.remove(22)  lst.pop()  lst.sort()  sorted(lst)
+len(lst), sum(lst), max(lst), 33 in lst
+[x ** 2 for x in range(5)]          # 串列生成式
+for i, v in enumerate(lst): ...     # 索引 + 值
+table = [[1, 2], [3, 4]]; table[1][0]  # 3</code></pre></details>
+    </section>
+    <section class="island" id="island-4" style="--island: #7048E8">
+      <header class="island-head">
+        <div class="island-title">
+          <span class="island-day">Day 4 · 09/03（四）</span>
+          <h3><span aria-hidden="true">🏔️</span> 第四島 · 函式之島</h3>
+          <p class="island-theme">函式與模組、元組／字典／集合</p>
+          <p class="island-ch">📚 第 7 章 函式 ＋ 第 8 章 元組、字典、集合</p>
+        </div>
+        <div class="island-progress" data-day="4"><span class="ring"><svg viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fg" cx="18" cy="18" r="15.9"/></svg><b class="ring-num">0/3</b></span><span class="island-badge">🏅 島嶼徽章</span></div>
+      </header>
+      <div class="levels">
+      <article class="lv kind-level" data-id="L08" id="lv-L08">
+        <div class="lv-head"><span class="lv-id">L08</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">🧩</span>函式與模組</h4>
+        <p class="lv-book">📖 第 7 章 7.1–7.7</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>用 def 定義函式、return 傳回值</li><li>參數預設值與關鍵字引數</li><li>使用 math / random / datetime 等內建模組</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L08_functions_modules.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L08" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L08 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-level" data-id="L09" id="lv-L09">
+        <div class="lv-head"><span class="lv-id">L09</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">🗂️</span>元組、字典、集合</h4>
+        <p class="lv-book">📖 第 8 章 8.1–8.3</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>分辨 tuple / dict / set 的使用時機</li><li>字典的新增、查詢、修改、刪除與走訪</li><li>集合運算：聯集、交集、差集</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L09_tuple_dict_set.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L09" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L09 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-boss" data-id="B4" id="lv-B4">
+        <div class="lv-head"><span class="lv-id">B4</span><span class="lv-kind">Boss 戰</span><span class="lv-xp">200 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">⚔️</span>Boss 戰：小小點餐系統</h4>
+        <p class="lv-book">📖 第 7–8 章綜合</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>用函式 + 字典設計一個可重複使用的小系統</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/B4_boss_ordering_system.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="B4" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="B4 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article></div>
+      <details class="cheat"><summary>📝 第四島小抄</summary>
+<pre><code>def bmi(h, w=60):            # 參數可有預設值
+    return w / (h / 100) ** 2
+def stats(lst):
+    return sum(lst), max(lst)   # 傳回多個值 → 元組
+total, big = stats([1, 2])
+global n                        # 在函式內修改全域變數
+import math, random, datetime
+math.pi  math.sqrt(9)  random.randint(1, 6)  random.choice(lst)  random.sample(range(1, 50), 6)
+datetime.datetime.now().year
+t = (1, 2, 3); a, b, c = t            # 元組：不可改
+d = {"a": 1}; d["b"] = 2; del d["a"]; d.get("x", 0); "a" in d
+for k, v in d.items(): ...
+d[k] = d.get(k, 0) + 1                # 計數
+s = {1, 2, 3}; s & t  s | t  s - t   s.add(4)   set(lst)  # 去重</code></pre></details>
+    </section>
+    <section class="island" id="island-5" style="--island: #C2255C">
+      <header class="island-head">
+        <div class="island-title">
+          <span class="island-day">Day 5 · 09/04（五）</span>
+          <h3><span aria-hidden="true">🏜️</span> 第五島 · 檔案之島</h3>
+          <p class="island-theme">檔案與例外處理、matplotlib 繪製圖表</p>
+          <p class="island-ch">📚 第 9 章 檔案與例外處理 ＋ 第 10 章 繪製圖表</p>
+        </div>
+        <div class="island-progress" data-day="5"><span class="ring"><svg viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fg" cx="18" cy="18" r="15.9"/></svg><b class="ring-num">0/3</b></span><span class="island-badge">🏅 島嶼徽章</span></div>
+      </header>
+      <div class="levels">
+      <article class="lv kind-level" data-id="L10" id="lv-L10">
+        <div class="lv-head"><span class="lv-id">L10</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">📁</span>檔案與例外處理</h4>
+        <p class="lv-book">📖 第 9 章 9.1–9.5</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>用 open() / with 讀寫文字檔</li><li>os.path 檢查路徑、建立資料夾</li><li>try / except / finally 處理執行時期錯誤</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L10_files_exceptions.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L10" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L10 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-level" data-id="L11" id="lv-L11">
+        <div class="lv-head"><span class="lv-id">L11</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">📈</span>matplotlib 繪製圖表</h4>
+        <p class="lv-book">📖 第 10 章 10.1–10.4</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>繪製線條圖、柱狀圖、圓餅圖</li><li>設定標題、座標、圖例與中文字型</li><li>在 Colab 中正確顯示與儲存圖表</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L11_matplotlib_charts.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L11" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L11 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-boss" data-id="B5" id="lv-B5">
+        <div class="lv-head"><span class="lv-id">B5</span><span class="lv-kind">Boss 戰</span><span class="lv-xp">200 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">⚔️</span>Boss 戰：銷售報表產生器</h4>
+        <p class="lv-book">📖 第 9–10 章綜合</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>讀檔 → 例外處理 → 統計 → 畫圖的完整資料流程</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/B5_boss_sales_report.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="B5" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="B5 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article></div>
+      <details class="cheat"><summary>📝 第五島小抄</summary>
+<pre><code>with open("a.txt", "w", encoding="utf-8") as f:   # w 寫 / a 附加 / r 讀
+    f.write("第一行\n")
+with open("a.txt", encoding="utf-8") as f:
+    for line in f:
+        print(line.strip())
+import os; os.path.exists(p)  os.mkdir(p)  os.listdir(".")
+try:
+    x = int(input())
+    y = 1 / x
+except ValueError:
+    print("不是整數")
+except ZeroDivisionError:
+    print("不能除以 0")
+finally:
+    print("一定會執行")
+import matplotlib.pyplot as plt
+plt.plot(x, y, marker="o", label="A"); plt.bar(names, vals); plt.pie(vals, labels=names, autopct="%.1f%%")
+plt.title("標題"); plt.xlabel("x"); plt.ylabel("y"); plt.legend(); plt.grid(True)
+plt.savefig("fig.png"); plt.show()</code></pre></details>
+    </section>
+    <section class="island" id="island-6" style="--island: #0B7285">
+      <header class="island-head">
+        <div class="island-title">
+          <span class="island-day">Day 6 · 09/05（六）</span>
+          <h3><span aria-hidden="true">🏰</span> 第六島 · 資料之島</h3>
+          <p class="island-theme">網路爬蟲、NumPy／pandas 資料分析初探與期末專題</p>
+          <p class="island-ch">📚 第 12 章 網頁資料擷取分析 ＋ NumPy／pandas 資料分析初探</p>
+        </div>
+        <div class="island-progress" data-day="6"><span class="ring"><svg viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fg" cx="18" cy="18" r="15.9"/></svg><b class="ring-num">0/3</b></span><span class="island-badge">🏅 島嶼徽章</span></div>
+      </header>
+      <div class="levels">
+      <article class="lv kind-level" data-id="L12" id="lv-L12">
+        <div class="lv-head"><span class="lv-id">L12</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">🕷️</span>網路爬蟲 requests + BeautifulSoup</h4>
+        <p class="lv-book">📖 第 12 章 12.1–12.5</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>用 requests 取得網頁、判讀狀態碼</li><li>用 BeautifulSoup 的 find / select 解析資料</li><li>把爬到的資料整理成串列與字典</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L12_web_scraping.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L12" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L12 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-level" data-id="L13" id="lv-L13">
+        <div class="lv-head"><span class="lv-id">L13</span><span class="lv-kind">關卡</span><span class="lv-xp">100 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">🐼</span>NumPy／pandas 資料分析初探</h4>
+        <p class="lv-book">📖 補充教材（銜接數據分析課程）</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>NumPy 陣列與向量化運算</li><li>pandas 讀取 CSV、篩選、排序、groupby</li><li>DataFrame 直接畫圖，銜接後續資料分析課程</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L13_numpy_pandas.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="L13" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="L13 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article>
+      <article class="lv kind-final" data-id="FINAL" id="lv-FINAL">
+        <div class="lv-head"><span class="lv-id">FINAL</span><span class="lv-kind">最終 Boss</span><span class="lv-xp">500 XP</span></div>
+        <h4 class="lv-name"><span class="lv-emoji" aria-hidden="true">👑</span>最終 Boss：咖啡店資料分析專題</h4>
+        <p class="lv-book">📖 全書綜合 + 補充教材</p>
+        <details class="lv-goals"><summary>這一關學什麼</summary><ul><li>整合 6 天所學，完成從讀取資料到產出圖表與結論的完整專題</li></ul></details>
+        <div class="lv-actions">
+          <a class="btn btn-colab" href="https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/FINAL_boss_coffee_analysis.ipynb" target="_blank" rel="noopener">在 Colab 開啟 ↗</a>
+          <form class="stamp-form" data-id="FINAL" autocomplete="off">
+            <input type="text" name="code" placeholder="通關密語" aria-label="FINAL 通關密語" maxlength="24" spellcheck="false">
+            <button type="submit" class="btn btn-stamp">蓋章</button>
+          </form>
+        </div>
+        <div class="stamp" aria-hidden="true"><span class="stamp-txt">通關</span><span class="stamp-date"></span></div>
+      </article></div>
+      <details class="cheat"><summary>📝 第六島小抄</summary>
+<pre><code>import requests
+from bs4 import BeautifulSoup
+r = requests.get(url); r.status_code; r.encoding = "utf-8"
+bs = BeautifulSoup(r.text, "html.parser")
+bs.title.text  bs.find("h3").text  bs.find_all("a")  bs.select(".cls")  bs.select("#id")[0]["href"]
+import numpy as np
+a = np.array([1, 2, 3]); a * 2; a.mean(); a[a > 1]
+import pandas as pd
+df = pd.read_csv(url); df.shape; df.head(); df.describe()
+df[df["分店"] == "信義店"]; df[(df.A > 1) & (df.B < 2)]
+df.sort_values("金額", ascending=False)
+df.groupby("分店")["金額"].sum().plot(kind="bar")
+df.dropna(); df.drop_duplicates(); df.isna().sum()</code></pre></details>
+    </section>
+
+  <section class="book card" id="book">
+    <h2>📖 集章冊</h2>
+    <p class="hint">每一關的通關密語都和你的暱稱綁定，別人的密語對你沒用喔。蓋滿 20 個章就能領結業證書。</p>
+    <div class="slots"><div class="slot" data-id="L00"><span class="slot-id">L00</span><span class="slot-emoji">🏕️</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L01"><span class="slot-id">L01</span><span class="slot-emoji">🐍</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L02"><span class="slot-id">L02</span><span class="slot-emoji">📦</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L03"><span class="slot-id">L03</span><span class="slot-emoji">🧮</span><span class="slot-mark">通關</span></div><div class="slot" data-id="B1"><span class="slot-id">B1</span><span class="slot-emoji">⚔️</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L04"><span class="slot-id">L04</span><span class="slot-emoji">🔤</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L05"><span class="slot-id">L05</span><span class="slot-emoji">🔀</span><span class="slot-mark">通關</span></div><div class="slot" data-id="B2"><span class="slot-id">B2</span><span class="slot-emoji">⚔️</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L06"><span class="slot-id">L06</span><span class="slot-emoji">🔁</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L07"><span class="slot-id">L07</span><span class="slot-emoji">📋</span><span class="slot-mark">通關</span></div><div class="slot" data-id="B3"><span class="slot-id">B3</span><span class="slot-emoji">⚔️</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L08"><span class="slot-id">L08</span><span class="slot-emoji">🧩</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L09"><span class="slot-id">L09</span><span class="slot-emoji">🗂️</span><span class="slot-mark">通關</span></div><div class="slot" data-id="B4"><span class="slot-id">B4</span><span class="slot-emoji">⚔️</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L10"><span class="slot-id">L10</span><span class="slot-emoji">📁</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L11"><span class="slot-id">L11</span><span class="slot-emoji">📈</span><span class="slot-mark">通關</span></div><div class="slot" data-id="B5"><span class="slot-id">B5</span><span class="slot-emoji">⚔️</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L12"><span class="slot-id">L12</span><span class="slot-emoji">🕷️</span><span class="slot-mark">通關</span></div><div class="slot" data-id="L13"><span class="slot-id">L13</span><span class="slot-emoji">🐼</span><span class="slot-mark">通關</span></div><div class="slot" data-id="FINAL"><span class="slot-id">FINAL</span><span class="slot-emoji">👑</span><span class="slot-mark">通關</span></div></div>
+    <div class="actions"><button class="btn btn-sea" id="certBtn" disabled>🎓 領取結業證書</button><span class="hint" id="certHint"></span><button class="btn" id="resetBtn" style="margin-left:auto">清除這台電腦的進度</button></div>
+  </section>
+
+  <section class="supply" id="supply">
+    <h2>⛽ 補給站</h2>
+    <div class="supply-grid">
+      <div class="card">
+        <h4>🧭 入島測驗（前測）</h4>
+        <p style="color:var(--ink2);font-size:.92rem;margin:6px 0 10px">8 題、3 分鐘，不計分，只是讓老師和你知道目前的起點在哪裡。</p>
+        <button class="btn btn-sea" id="quizBtn">開始測驗</button>
+      </div>
+      <div class="card faq">
+        <h4>🛟 Colab 急救箱</h4>
+        <details><summary>程式格一直轉圈圈，沒反應？</summary><p>可能在等你輸入（看格子下方有沒有輸入框），或卡在無窮迴圈。選單「執行階段 → 中斷執行」。</p></details>
+        <details><summary>出現 NameError: name 'xxx' is not defined</summary><p>上面的格子還沒執行（例如魔法工具箱），或變數名稱打錯。先「執行階段 → 全部執行」再試。</p></details>
+        <details><summary>密語對不上？</summary><p>筆記本「暱稱」欄要和這裡登錄的一樣（大小寫與空白不影響）。改完暱稱要重新執行魔法工具箱與通關密語那一格。</p></details>
+        <details><summary>圖表的中文變成方框？</summary><p>先執行該筆記本的「中文字型設定」格，再重新畫一次。</p></details>
+        <details><summary>我的修改不見了？</summary><p>記得「檔案 → 在雲端硬碟中儲存副本」，之後從自己的雲端硬碟開啟。</p></details>
+      </div>
+      <div class="card wide">
+        <h4>🗓 六天航程</h4>
+        <div class="tablewrap"><table class="sched"><thead><tr><th>天</th><th>日期</th><th>島嶼</th><th>課本章節</th><th>關卡</th></tr></thead><tbody><tr><td>Day 1</td><td>08/29（六）</td><td>🏝️ 起始之島</td><td>Python 概觀 ＋ 基本程式設計</td><td>L00、L01、L02、L03、B1</td></tr><tr><td>Day 2</td><td>08/30（日）</td><td>🌴 文字之島</td><td>字串與格式化 ＋ 選擇結構</td><td>L04、L05、B2</td></tr><tr><td>Day 3</td><td>08/31（一）</td><td>🌋 迴圈之島</td><td>重複結構 ＋ 串列</td><td>L06、L07、B3</td></tr><tr><td>Day 4</td><td>09/03（四）</td><td>🏔️ 函式之島</td><td>函式 ＋ 元組字典集合</td><td>L08、L09、B4</td></tr><tr><td>Day 5</td><td>09/04（五）</td><td>🏜️ 檔案之島</td><td>檔案與例外 ＋ 繪製圖表</td><td>L10、L11、B5</td></tr><tr><td>Day 6</td><td>09/05（六）</td><td>🏰 資料之島</td><td>網路爬蟲 ＋ 資料分析初探</td><td>L12、L13、FINAL</td></tr></tbody></table></div>
+      </div>
+      <div class="card wide"><h4>🔗 延伸資源</h4><div class="supply-grid" style="margin-top:8px"><div class="res-cat"><h4>官方與教學</h4><ul><li><a href="https://docs.python.org/zh-tw/3/tutorial/index.html" target="_blank" rel="noopener">Python 官方教學（繁體中文） ↗</a></li><li><a href="https://www.w3schools.com/python/" target="_blank" rel="noopener">W3Schools Python Tutorial ↗</a></li><li><a href="https://colab.research.google.com/notebooks/intro.ipynb" target="_blank" rel="noopener">Google Colab 官方歡迎頁（操作說明） ↗</a></li><li><a href="https://pythontutor.com/python-compiler.html" target="_blank" rel="noopener">Python Tutor：一步一步看程式怎麼跑 ↗</a></li></ul></div><div class="res-cat"><h4>練習與挑戰</h4><ul><li><a href="https://exercism.org/tracks/python" target="_blank" rel="noopener">Exercism Python 練習題 ↗</a></li><li><a href="https://www.codewars.com/" target="_blank" rel="noopener">Codewars（程式武道場） ↗</a></li><li><a href="https://quotes.toscrape.com/" target="_blank" rel="noopener">Quotes to Scrape：爬蟲練習專用網站 ↗</a></li></ul></div><div class="res-cat"><h4>資料分析銜接</h4><ul><li><a href="https://pandas.pydata.org/docs/user_guide/10min.html" target="_blank" rel="noopener">pandas 10 分鐘入門 ↗</a></li><li><a href="https://numpy.org/doc/stable/user/absolute_beginners.html" target="_blank" rel="noopener">NumPy 初學者指南 ↗</a></li><li><a href="https://matplotlib.org/stable/tutorials/index.html" target="_blank" rel="noopener">matplotlib 官方教學 ↗</a></li><li><a href="https://data.gov.tw/" target="_blank" rel="noopener">政府資料開放平臺（找資料集） ↗</a></li></ul></div><div class="res-cat"><h4>認證</h4><ul><li><a href="https://certiport.pearsonvue.com/Certifications/ITSpecialist/Certification/Overview" target="_blank" rel="noopener">ITS Python 國際認證（Certiport） ↗</a></li><li><a href="https://www.gotop.com.tw/" target="_blank" rel="noopener">碁峰資訊 ITS 認證資訊 ↗</a></li></ul></div></div></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>Python 冒險之旅 2026 · 數據分析暨機器學習應用班 · Python 基礎必修課（48 小時）</span><span>教材：最新 Python 基礎必修課（碁峰 AEL025100） · 講師：En 老師 · <a href="https://github.com/johnnychao/python-quest-2026" target="_blank" rel="noopener">GitHub</a></span></div></footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal" id="certModal" role="dialog" aria-modal="true" aria-label="結業證書"><div class="box">
+  <button class="btn close" data-close>關閉</button>
+  <div class="cert">
+    <p style="letter-spacing:.3em">CERTIFICATE OF COMPLETION</p>
+    <h2>結業證書</h2>
+    <div class="name" id="certName">勇者</div>
+    <p>稱號：<b id="certTitle"></b></p>
+    <p>完成「Python 冒險之旅 2026」六島 20 關全部挑戰，<br>具備 Python 程式設計基礎能力，可進入數據分析與機器學習課程。</p>
+    <div class="seal">全島<br>通關</div>
+    <div class="sign"><span>日期：<span id="certDate"></span></span><span>講師：En 老師</span></div>
+  </div>
+  <div style="margin-top:14px;display:flex;gap:10px"><button class="btn btn-sea" id="printCert">列印／存成 PDF</button></div>
+</div></div>
+<div class="modal" id="quizModal" role="dialog" aria-modal="true" aria-label="入島測驗"><div class="box quiz">
+  <button class="btn close" data-close>關閉</button><h3>🧭 入島測驗</h3><div id="quizBody"></div>
+</div></div>
+
+<script>// 精簡版 SHA-256（純 JS，與 Python hashlib.sha256 結果一致）
+function sha256Hex(str) {
+  const K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  const bytes = new TextEncoder().encode(str);
+  const bitLen = bytes.length * 8;
+  const padLen = ((bytes.length + 9 + 63) >> 6) << 6;
+  const buf = new Uint8Array(padLen);
+  buf.set(bytes); buf[bytes.length] = 0x80;
+  const dv = new DataView(buf.buffer);
+  dv.setUint32(padLen - 8, Math.floor(bitLen / 0x100000000));
+  dv.setUint32(padLen - 4, bitLen >>> 0);
+  let H = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  const W = new Uint32Array(64);
+  const rotr = (x, n) => (x >>> n) | (x << (32 - n));
+  for (let off = 0; off < padLen; off += 64) {
+    for (let i = 0; i < 16; i++) W[i] = dv.getUint32(off + i * 4);
+    for (let i = 16; i < 64; i++) {
+      const s0 = rotr(W[i-15], 7) ^ rotr(W[i-15], 18) ^ (W[i-15] >>> 3);
+      const s1 = rotr(W[i-2], 17) ^ rotr(W[i-2], 19) ^ (W[i-2] >>> 10);
+      W[i] = (W[i-16] + s0 + W[i-7] + s1) >>> 0;
+    }
+    let [a,b,c,d,e,f,g,h] = H;
+    for (let i = 0; i < 64; i++) {
+      const S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
+      const ch = (e & f) ^ (~e & g);
+      const t1 = (h + S1 + ch + K[i] + W[i]) >>> 0;
+      const S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
+      const maj = (a & b) ^ (a & c) ^ (b & c);
+      const t2 = (S0 + maj) >>> 0;
+      h = g; g = f; f = e; e = (d + t1) >>> 0; d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+    }
+    H = [(H[0]+a)>>>0,(H[1]+b)>>>0,(H[2]+c)>>>0,(H[3]+d)>>>0,(H[4]+e)>>>0,(H[5]+f)>>>0,(H[6]+g)>>>0,(H[7]+h)>>>0];
+  }
+  return H.map(x => x.toString(16).padStart(8, '0')).join('');
+}
+</script>
+<script>
+const LEVELS = [{"id": "L00", "day": 1, "kind": "intro", "name": "新手村：Colab 操作與通關方式", "xp": 50, "emoji": "🏕️", "goals": ["會開啟 Colab、執行程式格、儲存副本到雲端硬碟", "認識程式格、文字格與執行順序", "學會取得通關密語"], "book": "第 1 章 1.6–1.7（本課程以 Colab 取代 Spyder）", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L00_colab_basics.ipynb"}, {"id": "L01", "day": 1, "kind": "level", "name": "Python 初體驗", "xp": 100, "emoji": "🐍", "goals": ["用 print() 顯示文字與數字", "看懂並修正常見錯誤訊息", "使用註解說明程式"], "book": "第 1 章 1.3、1.7", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L01_python_first_steps.ipynb"}, {"id": "L02", "day": 1, "kind": "level", "name": "變數與資料型別", "xp": 100, "emoji": "📦", "goals": ["宣告變數並指定值", "分辨 int / float / str / bool", "用 int()、float()、str() 做型別轉換"], "book": "第 2 章 2.1–2.3、2.5", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L02_variables_types.ipynb"}, {"id": "L03", "day": 1, "kind": "level", "name": "運算子與 print 格式化", "xp": 100, "emoji": "🧮", "goals": ["使用算術、複合指定、關係與邏輯運算子", "掌握運算子優先順序", "用 % 格式字串與 f-string 控制輸出"], "book": "第 2 章 2.4、2.6", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L03_operators_format.ipynb"}, {"id": "B1", "day": 1, "kind": "boss", "name": "Boss 戰：旅費精算師", "xp": 200, "emoji": "⚔️", "goals": ["綜合運用變數、運算子與格式化輸出完成小專案"], "book": "第 1–2 章綜合", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/B1_boss_travel_budget.ipynb"}, {"id": "L04", "day": 2, "kind": "level", "name": "字串與格式化輸出入", "xp": 100, "emoji": "🔤", "goals": ["字串索引、切片與常用方法", "用 input() 取得使用者輸入並轉型", "用 format() 與 f-string 對齊、補零、千分位"], "book": "第 3 章 3.1–3.4", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L04_strings_io.ipynb"}, {"id": "L05", "day": 2, "kind": "level", "name": "選擇結構 if / elif / else", "xp": 100, "emoji": "🔀", "goals": ["寫出單向、雙向、多向與巢狀 if", "組合關係與邏輯運算式", "避免常見的條件判斷錯誤"], "book": "第 4 章 4.1–4.4", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L05_if_else.ipynb"}, {"id": "B2", "day": 2, "kind": "boss", "name": "Boss 戰：健康管理小幫手", "xp": 200, "emoji": "⚔️", "goals": ["輸入 → 計算 → 判斷 → 格式化輸出的完整流程"], "book": "第 3–4 章綜合", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/B2_boss_health_helper.ipynb"}, {"id": "L06", "day": 3, "kind": "level", "name": "迴圈 for / while", "xp": 100, "emoji": "🔁", "goals": ["用 for 與 range() 重複執行", "用 while 處理不確定次數的重複", "break、continue 與巢狀迴圈"], "book": "第 5 章 5.1–5.4", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L06_loops.ipynb"}, {"id": "L07", "day": 3, "kind": "level", "name": "串列 list", "xp": 100, "emoji": "📋", "goals": ["建立、讀取、修改串列", "append / insert / remove / sort 等方法", "二維串列與串列生成式"], "book": "第 6 章 6.1–6.6", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L07_lists.ipynb"}, {"id": "B3", "day": 3, "kind": "boss", "name": "Boss 戰：班級成績分析", "xp": 200, "emoji": "⚔️", "goals": ["用迴圈與串列完成統計、搜尋與排序"], "book": "第 5–6 章綜合", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/B3_boss_class_scores.ipynb"}, {"id": "L08", "day": 4, "kind": "level", "name": "函式與模組", "xp": 100, "emoji": "🧩", "goals": ["用 def 定義函式、return 傳回值", "參數預設值與關鍵字引數", "使用 math / random / datetime 等內建模組"], "book": "第 7 章 7.1–7.7", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L08_functions_modules.ipynb"}, {"id": "L09", "day": 4, "kind": "level", "name": "元組、字典、集合", "xp": 100, "emoji": "🗂️", "goals": ["分辨 tuple / dict / set 的使用時機", "字典的新增、查詢、修改、刪除與走訪", "集合運算：聯集、交集、差集"], "book": "第 8 章 8.1–8.3", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L09_tuple_dict_set.ipynb"}, {"id": "B4", "day": 4, "kind": "boss", "name": "Boss 戰：小小點餐系統", "xp": 200, "emoji": "⚔️", "goals": ["用函式 + 字典設計一個可重複使用的小系統"], "book": "第 7–8 章綜合", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/B4_boss_ordering_system.ipynb"}, {"id": "L10", "day": 5, "kind": "level", "name": "檔案與例外處理", "xp": 100, "emoji": "📁", "goals": ["用 open() / with 讀寫文字檔", "os.path 檢查路徑、建立資料夾", "try / except / finally 處理執行時期錯誤"], "book": "第 9 章 9.1–9.5", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L10_files_exceptions.ipynb"}, {"id": "L11", "day": 5, "kind": "level", "name": "matplotlib 繪製圖表", "xp": 100, "emoji": "📈", "goals": ["繪製線條圖、柱狀圖、圓餅圖", "設定標題、座標、圖例與中文字型", "在 Colab 中正確顯示與儲存圖表"], "book": "第 10 章 10.1–10.4", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L11_matplotlib_charts.ipynb"}, {"id": "B5", "day": 5, "kind": "boss", "name": "Boss 戰：銷售報表產生器", "xp": 200, "emoji": "⚔️", "goals": ["讀檔 → 例外處理 → 統計 → 畫圖的完整資料流程"], "book": "第 9–10 章綜合", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/B5_boss_sales_report.ipynb"}, {"id": "L12", "day": 6, "kind": "level", "name": "網路爬蟲 requests + BeautifulSoup", "xp": 100, "emoji": "🕷️", "goals": ["用 requests 取得網頁、判讀狀態碼", "用 BeautifulSoup 的 find / select 解析資料", "把爬到的資料整理成串列與字典"], "book": "第 12 章 12.1–12.5", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L12_web_scraping.ipynb"}, {"id": "L13", "day": 6, "kind": "level", "name": "NumPy／pandas 資料分析初探", "xp": 100, "emoji": "🐼", "goals": ["NumPy 陣列與向量化運算", "pandas 讀取 CSV、篩選、排序、groupby", "DataFrame 直接畫圖，銜接後續資料分析課程"], "book": "補充教材（銜接數據分析課程）", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/L13_numpy_pandas.ipynb"}, {"id": "FINAL", "day": 6, "kind": "final", "name": "最終 Boss：咖啡店資料分析專題", "xp": 500, "emoji": "👑", "goals": ["整合 6 天所學，完成從讀取資料到產出圖表與結論的完整專題"], "book": "全書綜合 + 補充教材", "url": "https://colab.research.google.com/github/johnnychao/python-quest-2026/blob/main/notebooks/FINAL_boss_coffee_analysis.ipynb"}];
+const DAYS = [{"day": 1, "island": "起始之島", "emoji": "🏝️", "color": "#2E8B57", "date": "2026-08-29", "weekday": "六", "theme": "認識 Python 與 Colab，學會變數、資料型別與運算子", "chapters": ["Python 語言概觀", "基本程式設計"]}, {"day": 2, "island": "文字之島", "emoji": "🌴", "color": "#1E90FF", "date": "2026-08-30", "weekday": "日", "theme": "字串處理、格式化輸出入與選擇結構", "chapters": ["字串與格式化輸出入", "選擇結構"]}, {"day": 3, "island": "迴圈之島", "emoji": "🌋", "color": "#E8590C", "date": "2026-08-31", "weekday": "一", "theme": "重複結構與串列：讓程式替你做苦工", "chapters": ["重複結構", "串列"]}, {"day": 4, "island": "函式之島", "emoji": "🏔️", "color": "#7048E8", "date": "2026-09-03", "weekday": "四", "theme": "函式與模組、元組／字典／集合", "chapters": ["函式", "元組、字典、集合"]}, {"day": 5, "island": "檔案之島", "emoji": "🏜️", "color": "#C2255C", "date": "2026-09-04", "weekday": "五", "theme": "檔案與例外處理、matplotlib 繪製圖表", "chapters": ["檔案與例外處理", "繪製圖表"]}, {"day": 6, "island": "資料之島", "emoji": "🏰", "color": "#0B7285", "date": "2026-09-05", "weekday": "六", "theme": "網路爬蟲、NumPy／pandas 資料分析初探與期末專題", "chapters": ["網頁資料擷取分析", "NumPy／pandas 資料分析初探"]}];
+const SALT = "python-quest-2026-datama";
+const TITLES = [[0, "新手村民"], [250, "見習勇者"], [700, "Python 冒險者"], [1300, "程式騎士"], [2000, "資料獵人"], [2850, "Python 傳說勇者"]];
+const TOTAL_XP = 2850;
+const QUIZ = [["電腦硬體中，負責運算與指揮各單元運作的是？", ["記憶單元", "中央處理單元（CPU）", "輸出單元", "硬碟"], 1], ["下列哪一個是 Python 程式檔的副檔名？", [".exe", ".py", ".doc", ".html"], 1], ["Python 屬於哪一種語言？", ["機器語言", "組合語言", "高階語言（直譯）", "自然語言"], 2], ["「演算法」最接近下列哪個說法？", ["一種電腦硬體", "解決問題的步驟", "一種程式語言", "網路協定"], 1], ["在 Python 中，# 開頭的那一行是？", ["標題", "註解（不會執行）", "錯誤", "變數"], 1], ["7 除以 2 的餘數是多少？", ["3", "3.5", "1", "2"], 2], ["如果 a = 5，執行 a = a + 3 之後 a 是多少？", ["5", "3", "8", "53"], 2], ["Google Colab 是什麼？", ["一種瀏覽器", "線上寫 Python 的免費環境", "手機 App", "試算表軟體"], 1]];
+const KEY = "pyquest2026";
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+let state = {nick: "", cleared: {}, quiz: null};
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s && typeof s === "object") state = Object.assign(state, s); } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
+
+function normName(s){ return (s||"").normalize("NFKC").replace(/\s+/g, "").toLowerCase(); }
+function expectedCode(levelId, nick){ return sha256Hex(`${SALT}|${levelId}|${normName(nick)}`).slice(0, 6).toUpperCase(); }
+function parseCode(raw){ const m = (raw||"").toUpperCase().replace(/\s+/g, "").match(/([0-9A-F]{6})$/); return m ? m[1] : null; }
+
+function xpNow(){ return LEVELS.filter(l => state.cleared[l.id]).reduce((a, l) => a + l.xp, 0); }
+function titleFor(xp){ let t = TITLES[0][1]; for (const [th, name] of TITLES) if (xp >= th) t = name; return t; }
+function nextTitle(xp){ for (const [th, name] of TITLES) if (xp < th) return [th, name]; return null; }
+function dayDone(day){ const lv = LEVELS.filter(l => l.day === day); return lv.every(l => state.cleared[l.id]); }
+
+function fmtDate(iso){ const d = new Date(iso); return `${String(d.getMonth()+1).padStart(2,"0")}/${String(d.getDate()).padStart(2,"0")}`; }
+
+function render(){
+  const xp = xpNow();
+  $("#nick").value = state.nick || "";
+  $("#rankTitle").textContent = titleFor(xp);
+  $("#xpNum").textContent = `${xp} / ${TOTAL_XP} XP`;
+  $("#xpBar").style.width = (100 * xp / TOTAL_XP) + "%";
+  const nt = nextTitle(xp);
+  $("#nextTitle").textContent = nt ? `再 ${nt[0] - xp} XP 升級為「${nt[1]}」` : "已達最高稱號！";
+  const n = Object.keys(state.cleared).length;
+  $("#stampCount").textContent = n;
+  $("#islandCount").textContent = DAYS.filter(d => dayDone(d.day)).length;
+  $$(".badge").forEach(b => b.classList.toggle("on", dayDone(+b.dataset.day)));
+  $$(".lv").forEach(el => {
+    const id = el.dataset.id, when = state.cleared[id];
+    el.classList.toggle("cleared", !!when);
+    if (when) $(".stamp-date", el).textContent = fmtDate(when);
+  });
+  $$(".island").forEach(sec => {
+    const day = +sec.id.split("-")[1];
+    const lv = LEVELS.filter(l => l.day === day), done = lv.filter(l => state.cleared[l.id]).length;
+    $(".ring-num", sec).textContent = `${done}/${lv.length}`;
+    $(".ring-fg", sec).style.strokeDashoffset = 100 - 100 * done / lv.length;
+    sec.classList.toggle("complete", done === lv.length);
+  });
+  $$(".slot").forEach(s => s.classList.toggle("on", !!state.cleared[s.dataset.id]));
+  $("#certBtn").disabled = !(n === LEVELS.length);
+  $("#certHint").textContent = n === LEVELS.length ? "全部通關！可以領取結業證書了 🎓" : `還差 ${LEVELS.length - n} 個章就能領取結業證書`;
+  drawMap();
+}
+
+function toast(msg, bad){ const t = $("#toast"); t.textContent = msg; t.classList.toggle("bad", !!bad); t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 3200); }
+
+// ---- map ----
+function drawMap(){
+  const svg = $("#chart"); if (!svg) return;
+  const W = 1000, H = 300; svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const pts = DAYS.map((d, i) => ({x: 95 + i * 162, y: 150 + (i % 2 ? 62 : -38)}));
+  let route = `M ${pts[0].x} ${pts[0].y}`;
+  for (let i = 1; i < pts.length; i++){ const a = pts[i-1], b = pts[i]; const cx = (a.x + b.x) / 2; route += ` C ${cx} ${a.y}, ${cx} ${b.y}, ${b.x} ${b.y}`; }
+  let out = `<path class="route" d="${route}"/>`;
+  DAYS.forEach((d, i) => {
+    const p = pts[i], done = dayDone(d.day);
+    const lv = LEVELS.filter(l => l.day === d.day), k = lv.filter(l => state.cleared[l.id]).length;
+    const r = 34, pts8 = [];
+    for (let a = 0; a < 8; a++){ const ang = a / 8 * Math.PI * 2; const rr = r * (1 + 0.18 * Math.sin(a * 2.3 + i)); pts8.push([p.x + rr * Math.cos(ang), p.y + rr * Math.sin(ang)]); }
+    let blob = `M ${pts8[0][0]} ${pts8[0][1]}`;
+    for (let a = 0; a < 8; a++){ const q = pts8[a], n = pts8[(a+1) % 8]; const mx = (q[0]+n[0])/2, my = (q[1]+n[1])/2; blob += ` Q ${q[0]} ${q[1]} ${mx} ${my}`; }
+    blob += " Z";
+    out += `<g class="node" data-day="${d.day}" tabindex="0" role="link" aria-label="前往第 ${d.day} 島 ${d.island}">
+      ${done ? `<circle class="done-ring" cx="${p.x}" cy="${p.y}" r="${r+8}"/>` : ""}
+      <path class="blob" d="${blob}" fill="${d.color}" opacity="${k ? 1 : 0.55}"/>
+      <text class="flag" x="${p.x}" y="${p.y + 8}" text-anchor="middle">${d.emoji}</text>
+      <text class="isl-label" x="${p.x}" y="${p.y + (i % 2 ? 64 : -54)}" text-anchor="middle">${d.island}</text>
+      <text class="isl-sub" x="${p.x}" y="${p.y + (i % 2 ? 80 : -70)}" text-anchor="middle">Day ${d.day} · ${k}/${lv.length}</text>
+    </g>`;
+  });
+  svg.innerHTML = out;
+  $$(".node", svg).forEach(n => { const go = () => { $("#island-" + n.dataset.day).scrollIntoView({behavior: "smooth", block: "start"}); }; n.addEventListener("click", go); n.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } }); });
+}
+
+// ---- today ----
+function renderToday(){
+  const box = $("#today"); const now = new Date(); const todayIso = now.toISOString().slice(0, 10);
+  const tz = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  const d = DAYS.find(x => x.date === tz);
+  const first = DAYS[0], last = DAYS[DAYS.length - 1];
+  let html;
+  if (d){
+    const lv = LEVELS.filter(l => l.day === d.day);
+    html = `<span class="t-label">今日航線</span><b>${d.emoji} Day ${d.day} · ${d.island}</b><span>${d.theme}</span><span class="t-links">${lv.map(l => `<a href="#lv-${l.id}">${l.id}</a>`).join("")}</span>`;
+  } else if (tz < first.date){
+    const days = Math.round((new Date(first.date) - new Date(tz)) / 86400000);
+    html = `<span class="t-label">啟航倒數</span><b>距離 ${fmtDate(first.date)} 啟航還有 ${days} 天</b><span>先完成 🏕️ L00 新手村，熟悉 Colab 的操作。</span><span class="t-links"><a href="#lv-L00">前往新手村</a></span>`;
+  } else if (tz > last.date){
+    html = `<span class="t-label">航程結束</span><b>六島航程已完成</b><span>所有關卡都還在，隨時可以回來複習或補章。</span>`;
+  } else {
+    const next = DAYS.find(x => x.date > tz);
+    html = `<span class="t-label">休息日</span><b>下一站：${next.emoji} Day ${next.day} ${next.island}（${fmtDate(next.date)}）</b><span>把還沒通關的關卡補完，或挑戰 Boss 的進階題。</span>`;
+  }
+  box.innerHTML = html;
+}
+
+// ---- confetti ----
+function confetti(){
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c = $("#confetti"), ctx = c.getContext("2d"); c.width = innerWidth; c.height = innerHeight;
+  const cols = ["#C8412B","#237A86","#B8860B","#2F8F5B","#7A5CC7"];
+  const ps = Array.from({length: 140}, () => ({x: innerWidth/2 + (Math.random()-.5)*200, y: innerHeight*0.4, vx: (Math.random()-.5)*14, vy: -Math.random()*12-4, r: Math.random()*6+3, c: cols[Math.random()*cols.length|0], a: Math.random()*Math.PI}));
+  let t = 0; const step = () => { ctx.clearRect(0,0,c.width,c.height); ps.forEach(p => { p.vy += .35; p.x += p.vx; p.y += p.vy; p.a += .1; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6); ctx.restore(); }); if (++t < 110) requestAnimationFrame(step); else ctx.clearRect(0,0,c.width,c.height); }; step();
+}
+
+// ---- events ----
+$("#nickForm").addEventListener("submit", e => {
+  e.preventDefault(); const v = $("#nick").value.trim();
+  if (!v){ toast("請輸入暱稱", true); return; }
+  if (state.nick && normName(v) !== normName(state.nick) && Object.keys(state.cleared).length){
+    if (!confirm(`你已經用「${state.nick}」蓋了 ${Object.keys(state.cleared).length} 個章。換暱稱後，舊密語會失效，確定要改成「${v}」嗎？`)) return;
+  }
+  state.nick = v; save(); render(); toast(`歡迎，勇者 ${v}！在每本 Colab 筆記本的「暱稱」欄也要填一樣的名字。`);
+});
+$$(".stamp-form").forEach(f => f.addEventListener("submit", e => {
+  e.preventDefault(); const id = f.dataset.id, raw = f.code.value;
+  if (!state.nick){ toast("先在上方登錄你的暱稱，密語才對得上！", true); $("#nick").focus(); return; }
+  const got = parseCode(raw);
+  if (!got){ toast("密語格式看起來不對，應該像 PYQ-L01-3DDC72", true); return; }
+  if (got !== expectedCode(id, state.nick)){ toast("密語不正確。請確認筆記本裡填的暱稱和這裡一樣（大小寫、空白不影響），再複製一次密語。", true); f.classList.add("shake"); return; }
+  const firstTime = !state.cleared[id];
+  state.cleared[id] = new Date().toISOString(); save(); render();
+  const lv = LEVELS.find(l => l.id === id);
+  if (firstTime){ confetti(); toast(`🎉 ${id} ${lv.name} 通關！+${lv.xp} XP`); if (dayDone(lv.day)) setTimeout(() => toast(`🏅 第 ${lv.day} 島全部通關，獲得島嶼徽章！`), 1800); }
+  else toast(`${id} 早就蓋過章了 👍`);
+}));
+$("#certBtn").addEventListener("click", () => {
+  $("#certName").textContent = state.nick || "勇者";
+  $("#certTitle").textContent = titleFor(xpNow());
+  $("#certDate").textContent = new Date().toLocaleDateString("zh-TW", {year: "numeric", month: "long", day: "numeric"});
+  $("#certModal").classList.add("open");
+});
+$$("[data-close]").forEach(b => b.addEventListener("click", () => b.closest(".modal").classList.remove("open")));
+$$(".modal").forEach(m => m.addEventListener("click", e => { if (e.target === m) m.classList.remove("open"); }));
+$("#printCert").addEventListener("click", () => window.print());
+$("#resetBtn").addEventListener("click", () => { if (confirm("確定要清除這台電腦上的闖關進度嗎？（密語可以再輸入一次）")){ state = {nick: state.nick, cleared: {}, quiz: null}; save(); render(); toast("進度已清除"); } });
+
+// ---- quiz ----
+$("#quizBtn").addEventListener("click", () => {
+  const box = $("#quizBody");
+  box.innerHTML = QUIZ.map((q, i) => `<div class="q"><p>${i+1}. ${q[0]}</p>${q[1].map((o, j) => `<label><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")}</div>`).join("") + `<button class="btn btn-sea" id="quizSubmit">交卷</button><div class="res" id="quizRes"></div>`;
+  $("#quizModal").classList.add("open");
+  $("#quizSubmit").addEventListener("click", () => {
+    let score = 0; QUIZ.forEach((q, i) => { const v = box.querySelector(`input[name=q${i}]:checked`); if (v && +v.value === q[2]) score++; });
+    state.quiz = {score, total: QUIZ.length, at: new Date().toISOString()}; save();
+    const msg = score >= 7 ? "太棒了，你已經有很好的基礎！" : score >= 4 ? "很好，有一些觀念了，這 6 天會補齊。" : "完全沒關係，這門課就是從零開始設計的！";
+    $("#quizRes").textContent = `你答對 ${score} / ${QUIZ.length} 題。${msg}`;
+  });
+});
+
+renderToday(); render();
+addEventListener("resize", () => { const c = $("#confetti"); c.width = innerWidth; c.height = innerHeight; });
+</script>
+</body>
+</html>
