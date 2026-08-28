@@ -55,6 +55,8 @@ h1,h2,h3,h4{font-family:var(--f-display);line-height:1.25;text-wrap:balance;marg
 .adv .who{display:flex;gap:10px;align-items:center;margin-top:10px}
 .adv input{flex:1;min-width:0;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg2);color:var(--ink)}
 .adv input:focus-visible,.stamp-form input:focus-visible{outline:2px solid var(--sea);outline-offset:1px}
+.adv .login-status{margin:8px 0 0;font-size:.9rem;color:var(--ink2)}
+.adv .login-status.on{color:var(--sea);font-weight:700}
 .btn{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--bg2);color:var(--ink);padding:9px 14px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:transform .12s ease, background .12s}
 .btn:hover{transform:translateY(-1px)} .btn:active{transform:translateY(0)}
 .btn:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
@@ -204,7 +206,8 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
     </div>
     <aside class="card adv" aria-label="勇者證">
       <h2>Adventurer · 勇者證</h2>
-      <form class="who" id="nickForm"><input id="nick" placeholder="輸入你的暱稱（之後筆記本也要填一樣的）" maxlength="20" required><button class="btn btn-sea" type="submit">登錄</button></form>
+      <form class="who" id="nickForm"><input id="nick" placeholder="輸入你的暱稱（之後筆記本也要填一樣的）" maxlength="20" required><button class="btn btn-sea" id="nickSubmit" type="submit">登錄</button></form>
+      <p class="login-status" id="nickStatus" role="status" aria-live="polite">尚未登錄</p>
       <div class="rank"><span class="title" id="rankTitle">新手村民</span><span class="xp" id="xpNum">0 / 2850 XP</span></div>
       <div class="bar" role="progressbar" aria-label="XP 進度"><i id="xpBar"></i></div>
       <div class="stats"><span>⭐ <span id="nextTitle"></span></span></div>
@@ -785,6 +788,9 @@ function fmtDate(iso){ const d = new Date(iso); return `${String(d.getMonth()+1)
 function render(){
   const xp = xpNow();
   $("#nick").value = state.nick || "";
+  $("#nickStatus").textContent = state.nick ? `✅ 已登錄：${state.nick}` : "尚未登錄";
+  $("#nickStatus").classList.toggle("on", !!state.nick);
+  $("#nickSubmit").textContent = state.nick ? "更新暱稱" : "登錄";
   $("#rankTitle").textContent = titleFor(xp);
   $("#xpNum").textContent = `${xp} / ${TOTAL_XP} XP`;
   $("#xpBar").style.width = (100 * xp / TOTAL_XP) + "%";
